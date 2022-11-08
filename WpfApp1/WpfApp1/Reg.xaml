@@ -1,0 +1,30 @@
+﻿<Page x:Class="WpfApp1.Reg"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfApp1"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Reg">
+    <Grid>
+        <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Логин" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="30"></TextBlock>
+            <TextBlock Grid.Row="1" Text="Пароль" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="30"></TextBlock>
+            <Button Name="Enter" Grid.Row="2" Content="Войти" Background="#FFFF9494" HorizontalAlignment="Right" Margin="30,0" Click="Enter_Click_1"></Button>
+            <Button Click="Button_Click" Grid.Row="2" Grid.Column="2" Content="Зарегистрироваться" Background="#FFBDF192" HorizontalAlignment="Left" Margin="30,0"></Button>
+            <TextBox Name="LoginTextBox" Grid.Column="1" Margin="30,0"></TextBox>
+            <TextBox Name="PasswordTexBox" Grid.Row="1" Grid.Column="2"></TextBox>
+
+        
+        
+    </Grid>
+</Page>

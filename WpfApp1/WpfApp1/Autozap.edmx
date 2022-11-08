@@ -1,0 +1,385 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище AutozapBDModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ClientSet">
+          <Key>
+            <PropertyRef Name="Id_client" />
+          </Key>
+          <Property Name="Id_client" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fio" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="User_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="CorzinaSet">
+          <Key>
+            <PropertyRef Name="Id_cor" />
+          </Key>
+          <Property Name="Id_cor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Price" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Kolvo" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderSet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Adres" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Sposob_oplati" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Client_Id_client" Type="int" />
+        </EntityType>
+        <EntityType Name="TovariSet">
+          <Key>
+            <PropertyRef Name="Id_tov" />
+          </Key>
+          <Property Name="Id_tov" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Price" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Category" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Order_Id" Type="int" />
+          <Property Name="Corzina_Id_cor" Type="int" />
+        </EntityType>
+        <EntityType Name="UserSet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Role" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "AutozapBD.dbo.Zap" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="Zap">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="kolvo" Type="int" />
+          <Property Name="proizv" Type="varchar" MaxLength="50" />
+          <Property Name="price" Type="int" />
+          <Property Name="marka" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_ClientOrder">
+          <End Role="ClientSet" Type="Self.ClientSet" Multiplicity="0..1" />
+          <End Role="OrderSet" Type="Self.OrderSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClientSet">
+              <PropertyRef Name="Id_client" />
+            </Principal>
+            <Dependent Role="OrderSet">
+              <PropertyRef Name="Client_Id_client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderTovari">
+          <End Role="OrderSet" Type="Self.OrderSet" Multiplicity="0..1" />
+          <End Role="TovariSet" Type="Self.TovariSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderSet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TovariSet">
+              <PropertyRef Name="Order_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TovariCorzina">
+          <End Role="CorzinaSet" Type="Self.CorzinaSet" Multiplicity="0..1" />
+          <End Role="TovariSet" Type="Self.TovariSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorzinaSet">
+              <PropertyRef Name="Id_cor" />
+            </Principal>
+            <Dependent Role="TovariSet">
+              <PropertyRef Name="Corzina_Id_cor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserEntity2">
+          <End Role="UserSet" Type="Self.UserSet" Multiplicity="0..1" />
+          <End Role="ClientSet" Type="Self.ClientSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientSet">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище AutozapBDModelContainer">
+          <EntitySet Name="ClientSet" EntityType="Self.ClientSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CorzinaSet" EntityType="Self.CorzinaSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderSet" EntityType="Self.OrderSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TovariSet" EntityType="Self.TovariSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserSet" EntityType="Self.UserSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Zap" EntityType="Self.Zap" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Zap].[id] AS [id], 
+    [Zap].[name] AS [name], 
+    [Zap].[kolvo] AS [kolvo], 
+    [Zap].[proizv] AS [proizv], 
+    [Zap].[price] AS [price], 
+    [Zap].[marka] AS [marka]
+    FROM [dbo].[Zap] AS [Zap]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ClientOrder" Association="Self.FK_ClientOrder">
+            <End Role="ClientSet" EntitySet="ClientSet" />
+            <End Role="OrderSet" EntitySet="OrderSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderTovari" Association="Self.FK_OrderTovari">
+            <End Role="OrderSet" EntitySet="OrderSet" />
+            <End Role="TovariSet" EntitySet="TovariSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TovariCorzina" Association="Self.FK_TovariCorzina">
+            <End Role="CorzinaSet" EntitySet="CorzinaSet" />
+            <End Role="TovariSet" EntitySet="TovariSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserEntity2" Association="Self.FK_UserEntity2">
+            <End Role="UserSet" EntitySet="UserSet" />
+            <End Role="ClientSet" EntitySet="ClientSet" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AutozapBDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ClientSet">
+          <Key>
+            <PropertyRef Name="Id_client" />
+          </Key>
+          <Property Name="Id_client" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fio" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="User_Id" Type="Int32" />
+          <NavigationProperty Name="OrderSet" Relationship="Self.FK_ClientOrder" FromRole="ClientSet" ToRole="OrderSet" />
+          <NavigationProperty Name="UserSet" Relationship="Self.FK_UserEntity2" FromRole="ClientSet" ToRole="UserSet" />
+        </EntityType>
+        <EntityType Name="CorzinaSet">
+          <Key>
+            <PropertyRef Name="Id_cor" />
+          </Key>
+          <Property Name="Id_cor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Kolvo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="TovariSet" Relationship="Self.FK_TovariCorzina" FromRole="CorzinaSet" ToRole="TovariSet" />
+        </EntityType>
+        <EntityType Name="OrderSet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Adres" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sposob_oplati" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Client_Id_client" Type="Int32" />
+          <NavigationProperty Name="ClientSet" Relationship="Self.FK_ClientOrder" FromRole="OrderSet" ToRole="ClientSet" />
+          <NavigationProperty Name="TovariSet" Relationship="Self.FK_OrderTovari" FromRole="OrderSet" ToRole="TovariSet" />
+        </EntityType>
+        <EntityType Name="TovariSet">
+          <Key>
+            <PropertyRef Name="Id_tov" />
+          </Key>
+          <Property Name="Id_tov" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Category" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Order_Id" Type="Int32" />
+          <Property Name="Corzina_Id_cor" Type="Int32" />
+          <NavigationProperty Name="CorzinaSet" Relationship="Self.FK_TovariCorzina" FromRole="TovariSet" ToRole="CorzinaSet" />
+          <NavigationProperty Name="OrderSet" Relationship="Self.FK_OrderTovari" FromRole="TovariSet" ToRole="OrderSet" />
+        </EntityType>
+        <EntityType Name="UserSet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ClientSet" Relationship="Self.FK_UserEntity2" FromRole="UserSet" ToRole="ClientSet" />
+        </EntityType>
+        <EntityType Name="Zap">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="kolvo" Type="Int32" />
+          <Property Name="proizv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="price" Type="Int32" />
+          <Property Name="marka" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_ClientOrder">
+          <End Role="ClientSet" Type="Self.ClientSet" Multiplicity="0..1" />
+          <End Role="OrderSet" Type="Self.OrderSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClientSet">
+              <PropertyRef Name="Id_client" />
+            </Principal>
+            <Dependent Role="OrderSet">
+              <PropertyRef Name="Client_Id_client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserEntity2">
+          <End Role="UserSet" Type="Self.UserSet" Multiplicity="0..1" />
+          <End Role="ClientSet" Type="Self.ClientSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientSet">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TovariCorzina">
+          <End Role="CorzinaSet" Type="Self.CorzinaSet" Multiplicity="0..1" />
+          <End Role="TovariSet" Type="Self.TovariSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorzinaSet">
+              <PropertyRef Name="Id_cor" />
+            </Principal>
+            <Dependent Role="TovariSet">
+              <PropertyRef Name="Corzina_Id_cor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderTovari">
+          <End Role="OrderSet" Type="Self.OrderSet" Multiplicity="0..1" />
+          <End Role="TovariSet" Type="Self.TovariSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderSet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TovariSet">
+              <PropertyRef Name="Order_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AutozapBDEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ClientSet" EntityType="Self.ClientSet" />
+          <EntitySet Name="CorzinaSet" EntityType="Self.CorzinaSet" />
+          <EntitySet Name="OrderSet" EntityType="Self.OrderSet" />
+          <EntitySet Name="TovariSet" EntityType="Self.TovariSet" />
+          <EntitySet Name="UserSet" EntityType="Self.UserSet" />
+          <EntitySet Name="Zap" EntityType="Self.Zap" />
+          <AssociationSet Name="FK_ClientOrder" Association="Self.FK_ClientOrder">
+            <End Role="ClientSet" EntitySet="ClientSet" />
+            <End Role="OrderSet" EntitySet="OrderSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserEntity2" Association="Self.FK_UserEntity2">
+            <End Role="UserSet" EntitySet="UserSet" />
+            <End Role="ClientSet" EntitySet="ClientSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TovariCorzina" Association="Self.FK_TovariCorzina">
+            <End Role="CorzinaSet" EntitySet="CorzinaSet" />
+            <End Role="TovariSet" EntitySet="TovariSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderTovari" Association="Self.FK_OrderTovari">
+            <End Role="OrderSet" EntitySet="OrderSet" />
+            <End Role="TovariSet" EntitySet="TovariSet" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище AutozapBDModelContainer" CdmEntityContainer="AutozapBDEntities">
+          <EntitySetMapping Name="ClientSet">
+            <EntityTypeMapping TypeName="AutozapBDModel.ClientSet">
+              <MappingFragment StoreEntitySet="ClientSet">
+                <ScalarProperty Name="Id_client" ColumnName="Id_client" />
+                <ScalarProperty Name="fio" ColumnName="fio" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CorzinaSet">
+            <EntityTypeMapping TypeName="AutozapBDModel.CorzinaSet">
+              <MappingFragment StoreEntitySet="CorzinaSet">
+                <ScalarProperty Name="Id_cor" ColumnName="Id_cor" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Kolvo" ColumnName="Kolvo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderSet">
+            <EntityTypeMapping TypeName="AutozapBDModel.OrderSet">
+              <MappingFragment StoreEntitySet="OrderSet">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Adres" ColumnName="Adres" />
+                <ScalarProperty Name="Sposob_oplati" ColumnName="Sposob_oplati" />
+                <ScalarProperty Name="Client_Id_client" ColumnName="Client_Id_client" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TovariSet">
+            <EntityTypeMapping TypeName="AutozapBDModel.TovariSet">
+              <MappingFragment StoreEntitySet="TovariSet">
+                <ScalarProperty Name="Id_tov" ColumnName="Id_tov" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Order_Id" ColumnName="Order_Id" />
+                <ScalarProperty Name="Corzina_Id_cor" ColumnName="Corzina_Id_cor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserSet">
+            <EntityTypeMapping TypeName="AutozapBDModel.UserSet">
+              <MappingFragment StoreEntitySet="UserSet">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Zap">
+            <EntityTypeMapping TypeName="AutozapBDModel.Zap">
+              <MappingFragment StoreEntitySet="Zap">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="kolvo" ColumnName="kolvo" />
+                <ScalarProperty Name="proizv" ColumnName="proizv" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="marka" ColumnName="marka" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
